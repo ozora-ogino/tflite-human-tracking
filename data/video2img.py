@@ -4,7 +4,14 @@ from argparse import ArgumentParser
 import cv2
 
 
-def _main(video: str, save_dir: str, max_frame):
+def _main(video: str, save_dir: str, limit_frames: int) -> None:
+    """ "Convert video to images.
+
+    Args:
+        video(str): Path to video file.
+        save_dir(str): Directory to save images.
+        limit_frames(int): Max number of frames to save.
+    """
     if not os.path.exists(video):
         raise Exception("Video file not found.")
 
@@ -16,7 +23,7 @@ def _main(video: str, save_dir: str, max_frame):
     count = 0
 
     # Video to images.
-    while success and count < max_frame:
+    while success and count < limit_frames:
         cv2.imwrite(os.path.join(save_dir, f"frame{count}.jpg"), image)
         success, image = vidcap.read()
         print("Read a new frame: ", success)
@@ -27,6 +34,6 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--video", required=True)
     parser.add_argument("--save-dir", default="./data/frames/")
-    parser.add_argument("--max-frame", default=300, type=int)
+    parser.add_argument("--limit-frames", default=300, type=int)
     args = parser.parse_args()
     _main(**vars(args))
