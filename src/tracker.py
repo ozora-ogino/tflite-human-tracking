@@ -9,13 +9,14 @@ import cv2
 import numpy as np
 
 from sort import Sort
-from utils import is_intersect
+from utils import check_direction, is_intersect
 
 
 class Tracker(object):
     def __init__(
         self,
         border: List[Tuple[int]],
+        direction: Tuple[bool],
         count_callback: Optional[Callable] = None,
     ):
         """Constructor of Tracker.
@@ -30,15 +31,24 @@ class Tracker(object):
         self.count_callback = count_callback
         self.memory = {}
         self.counter = 0
+        self.direction = direction
 
         self.H, self.H = None, None
 
         np.random.seed(2021)
         self.COLORS = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
 
-    def _is_count(self, motion, border):
-        """Return true if motion and border intersect"""
-        return is_intersect(motion[0], motion[1], border[0], border[1])
+    def _is_count(self, center, center_prev, border) -> bool:
+        """Check whether count or not.
+
+        1. check_direction: Check the direction of human movement.
+                            If direction is not specified, return True.
+        2. is_intersect: Check whether the border and the human movement intersect.
+        """
+
+        return check_direction(center, center_prev, self.direction) and is_intersect(
+            center, center_prev, border[0], border[1]
+        )
 
     def update(self, frame: np.ndarray, dets: np.ndarray) -> np.ndarray:
         """Update tracker and draw bounding box in a frame.
@@ -83,7 +93,7 @@ class Tracker(object):
                 # Draw a motion of bounding box.
                 cv2.line(frame, center, center_prev, color, 3)
 
-                if self._is_count([center, center_prev], self.border):
+                if self._is_count(center, center_prev, self.border):
                     self.counter += 1
                     # Execute callback.
                     if self.count_callback:

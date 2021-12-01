@@ -13,6 +13,7 @@ import numpy as np
 from detect import Detect
 from streams import VideoStream
 from tracker import Tracker
+from utils import direction_config
 
 
 def _detect_person(
@@ -57,6 +58,7 @@ def main(
     video_fmt: str,
     confidence: float,
     iou_threshold: float,
+    direction: str,
 ):
     """Track human objects and count the number of human.
 
@@ -72,7 +74,8 @@ def main(
 
     # The line to count.
     border = [(0, 500), (1920, 500)]
-    tracker = Tracker(border)
+    direction = direction_config.get(direction)
+    tracker = Tracker(border, direction)
     detect = Detect(model, confidence)
     stream = VideoStream(src)
     writer = None
@@ -129,5 +132,6 @@ if __name__ == "__main__":
     parser.add_argument("--video-fmt", help="Format of output video file.", choices=["mp4", "avi"], default="mp4")
     parser.add_argument("--confidence", type=float, default=0.2, help="Confidence threshold.")
     parser.add_argument("--iou-threshold", type=float, default=0.2, help="IoU threshold for NMS.")
+    parser.add_argument("--direction", default=None, choices=direction_config.keys())
     args = vars(parser.parse_args())
     main(**args)
