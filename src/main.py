@@ -98,8 +98,11 @@ def main(
         # Executed only first time.
         if writer is None:
             # Initialize video writer.
+            model_name = os.path.basename(model).split(".")[0]
+            video_name = os.path.basename(src).split(".")[0]
             codecs = {"mp4": "MP4V", "avi": "MJPG"}
-            output_video = os.path.join(dest, f"result.{video_fmt}")
+            basename = f"{video_name}_{model_name}"
+            output_video = os.path.join(dest, f"{basename}.{video_fmt}")
             fourcc = cv2.VideoWriter_fourcc(*codecs[video_fmt])
             writer = cv2.VideoWriter(output_video, fourcc, 30, (frame.shape[1], frame.shape[0]), True)
 
@@ -109,7 +112,7 @@ def main(
             print(f"Estimated total time: {second_per_frame * total_frames:.4f}")
 
         # Save frame as an image and video.
-        cv2.imwrite(os.path.join(dest, "detect.jpg"), frame)
+        cv2.imwrite(os.path.join(dest, f"{basename}.jpg"), frame)
         writer.write(frame)
 
     writer.release()
@@ -123,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument("--src", help="Path to video source.", default="./data/TownCentreXVID.mp4")
     parser.add_argument("--dest", help="Path to output directory", default="./outputs/")
     parser.add_argument("--model", help="Path to YOLOv5 tflite file", default="./models/yolov5n6-fp16.tflite")
-    parser.add_argument("--video-fmt", help="Format of output video file.", choices=["mp4", "avi"], default="avi")
+    parser.add_argument("--video-fmt", help="Format of output video file.", choices=["mp4", "avi"], default="mp4")
     parser.add_argument("--confidence", type=float, default=0.2, help="Confidence threshold.")
     parser.add_argument("--iou-threshold", type=float, default=0.2, help="IoU threshold for NMS.")
     args = vars(parser.parse_args())

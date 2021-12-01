@@ -1,10 +1,57 @@
+<h1 align="center">
+  TensorFlow Light Human Tracking
+</h1>
 
-## SORT
+![](./outputs/trim10s.mp4_yolov5l-fp16.tflite.mp4)
 
-> A simple online and realtime tracking algorithm for 2D multiple object tracking in video sequences.
+The motivation of TensorFlow Lite Human Tracking is developing person tacking system for edge camera.
+For example, count the number of visitors in somewhere.
 
-https://github.com/abewley/sort
+To track and detect people over frames, DeepSORT is adopted.
 
-## Dataset
+For the detail about DeepSORT, refer [this great article](https://medium.com/augmented-startups/deepsort-deep-learning-applied-to-object-tracking-924f59f99104).
 
-https://www.kaggle.com/ashayajbani/oxford-town-centre/version/4?select=TownCentreXVID.mp4
+
+Currently [YOLOv5](https://github.com/ultralytics/yolov5) models are supported for object detection model.
+To get YOLOv5 tflite model, see [`models/README.md`](./models/README.md)
+
+## <div align="center">Quick Start Example</div>
+
+```bash
+git clone git@github.com:ozora-ogino/tflite-human-tracking.git
+cd tflite-human-tracking
+python main.py --src ./data/<YOUR_VIDEO_FILE>.mp4 --model ./models/<YOLOV5_MODEL>.tflite
+```
+
+### Docker
+
+```bash
+./build_image.sh
+./run.sh ./data/<YOUR_VIDEO_FILE>.mp4 ./models/<YOLOV5_MODEL>.tflite
+```
+
+Then you can see the results in `outputs` folder.
+
+
+### Dataset
+The example video on top of here is [TownCentreXVID](https://www.kaggle.com/ashayajbani/oxford-town-centre/version/4?select=TownCentreXVID.mp4).
+You can download it from the link (kaggle).
+
+I recoomend to trim it for about 10s because it's too big for testing.
+
+
+## <div align="center">Citations</div>
+
+### SORT
+
+```
+@inproceedings{Bewley2016_sort,
+  author={Bewley, Alex and Ge, Zongyuan and Ott, Lionel and Ramos, Fabio and Upcroft, Ben},
+  booktitle={2016 IEEE International Conference on Image Processing (ICIP)},
+  title={Simple online and realtime tracking},
+  year={2016},
+  pages={3464-3468},
+  keywords={Benchmark testing;Complexity theory;Detectors;Kalman filters;Target tracking;Visualization;Computer Vision;Data Association;Detection;Multiple Object Tracking},
+  doi={10.1109/ICIP.2016.7533003}
+}
+```
