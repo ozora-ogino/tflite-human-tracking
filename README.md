@@ -2,7 +2,9 @@
   TensorFlow Light Human Tracking
 </h1>
 
-![](./outputs/trim10s.mp4_yolov5l-fp16.tflite.mp4)
+<div align="center">
+  <img src="./outputs/trim10s_yolov5l-fp16.tflite.gif" width="60%">
+</div>
 
 The motivation of TensorFlow Lite Human Tracking is developing person tacking system for edge camera.
 For example, count the number of visitors in somewhere.
