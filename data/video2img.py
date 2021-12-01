@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+# Copyright 2021.
+# ozora-ogino
+
 import os
 from argparse import ArgumentParser
 
@@ -24,7 +29,7 @@ def _main(video: str, save_dir: str, limit_frames: int) -> None:
 
     # Video to images.
     while success and count < limit_frames:
-        cv2.imwrite(os.path.join(save_dir, f"frame{count}.jpg"), image)
+        cv2.imwrite(os.path.join(save_dir, f"frame{str(count).zfill(5)}.jpg"), image)
         success, image = vidcap.read()
         print("Read a new frame: ", success)
         count += 1

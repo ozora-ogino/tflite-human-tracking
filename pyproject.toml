@@ -28,5 +28,6 @@ protected-access,
 unnecessary-lambda,
 logging-format-interpolation,
 broad-except
+bare-except
 """
 enable = "C0303"  # Trailing whitespace
