@@ -1,4 +1,3 @@
 **
 !.gitignore
-!trim10s.mp4_yolov5l-fp16.tflite.jpg
-!trim10s.mp4_yolov5l-fp16.tflite.mp4
+!trim10s_yolov5l-fp16.tflite.gif
