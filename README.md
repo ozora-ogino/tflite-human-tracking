@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-  <img src="./outputs/trim10s_yolov5l-fp16.tflite.gif" width="60%">
+  <img src="./outputs/testdata_yolov5l-fp16.gif" width="60%">
 </div>
 
 The motivation of TensorFlow Lite Human Tracking is developing person tacking system for edge camera.
