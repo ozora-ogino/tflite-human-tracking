@@ -7,7 +7,7 @@
 </div>
 
 The motivation of TensorFlow Lite Human Tracking is developing person tacking system for edge camera.
-For example, count the number of visitors in somewhere.
+For example, count the number of visitors.
 
 To track and detect people over frames, DeepSORT is adopted.
 
