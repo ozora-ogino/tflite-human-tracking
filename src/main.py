@@ -6,6 +6,7 @@
 import argparse
 import os
 import time
+from typing import Dict, Tuple
 
 import cv2
 import numpy as np
@@ -58,7 +59,7 @@ def main(
     video_fmt: str,
     confidence: float,
     iou_threshold: float,
-    direction: str,
+    directions: Dict[str, Tuple[bool]],
 ):
     """Track human objects and count the number of human.
 
@@ -74,8 +75,8 @@ def main(
 
     # The line to count.
     border = [(0, 500), (1920, 500)]
-    direction = direction_config.get(direction)
-    tracker = Tracker(border, direction)
+    directions = {key: direction_config.get(d_str) for key, d_str in directions.items()}
+    tracker = Tracker(border, directions)
     detect = Detect(model, confidence)
     stream = VideoStream(src)
     writer = None
@@ -132,6 +133,7 @@ if __name__ == "__main__":
     parser.add_argument("--video-fmt", help="Format of output video file.", choices=["mp4", "avi"], default="mp4")
     parser.add_argument("--confidence", type=float, default=0.2, help="Confidence threshold.")
     parser.add_argument("--iou-threshold", type=float, default=0.2, help="IoU threshold for NMS.")
-    parser.add_argument("--direction", default=None, choices=direction_config.keys())
+    parser.add_argument("--directions", default={"total": None}, type=eval, help="Directions")
+
     args = vars(parser.parse_args())
     main(**args)

@@ -39,6 +39,6 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--video", required=True)
     parser.add_argument("--save-dir", default="./data/frames/")
-    parser.add_argument("--limit-frames", default=300, type=int)
+    parser.add_argument("--limit-frames", default=800, type=int)
     args = parser.parse_args()
     _main(**vars(args))

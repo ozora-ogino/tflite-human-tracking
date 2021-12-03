@@ -16,7 +16,7 @@ class Tracker(object):
     def __init__(
         self,
         border: List[Tuple[int]],
-        direction: Tuple[bool],
+        directions: Tuple[bool],
         count_callback: Optional[Callable] = None,
     ):
         """Constructor of Tracker.
@@ -31,22 +31,33 @@ class Tracker(object):
         self.count_callback = count_callback
         self.memory = {}
         self.counter = 0
-        self.direction = direction
-
-        self.H, self.H = None, None
+        self.counter = {key: 0 for key in directions.keys()}
+        self.directions = directions
 
         np.random.seed(2021)
         self.COLORS = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
 
-    def _is_count(self, center, center_prev, border) -> bool:
+    def _is_count(
+        self,
+        center: Tuple[int],
+        center_prev: Tuple[int],
+        border: List[Tuple[int]],
+        key: str,
+    ) -> bool:
         """Check whether count or not.
 
         1. check_direction: Check the direction of human movement.
                             If direction is not specified, return True.
         2. is_intersect: Check whether the border and the human movement intersect.
+
+        Args:
+            center(Tuple[int]): Current center position.
+            center_prev(Tuple[int]): Previous center position.
+            border(List[Tuple[int]]): Border.
+            key(str): "inside", "outside" or "total".
         """
 
-        return check_direction(center, center_prev, self.direction) and is_intersect(
+        return check_direction(center, center_prev, self.directions[key]) and is_intersect(
             center, center_prev, border[0], border[1]
         )
 
@@ -93,11 +104,15 @@ class Tracker(object):
                 # Draw a motion of bounding box.
                 cv2.line(frame, center, center_prev, color, 3)
 
-                if self._is_count(center, center_prev, self.border):
-                    self.counter += 1
-                    # Execute callback.
-                    if self.count_callback:
-                        self.count_callback(self.counter)
+                callback = False
+                for key in self.directions.keys():
+                    if self._is_count(center, center_prev, self.border, key):
+                        self.counter[key] += 1
+                        callback = True
+
+                # Execute callback.
+                if self.count_callback and callback:
+                    self.count_callback(self.counter)
 
             # Put ID on the box.
             cv2.putText(
@@ -112,14 +127,15 @@ class Tracker(object):
 
         # Draw border.
         cv2.line(frame, self.border[0], self.border[1], (10, 255, 0), 3)
-        # Put counter in top right corner.
-        cv2.putText(
-            frame,
-            str(self.counter),
-            (100, 200),
-            cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,
-            5.0,
-            (10, 255, 0),
-            3,
-        )
+        # Put counter in the top left corner.
+        for i, (key, count) in enumerate(self.counter.items()):
+            cv2.putText(
+                frame,
+                f"{key}: {count}",
+                (30, 30 + 80 * (i + 1)),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                2.0,
+                (10, 255, 0),
+                5,
+            )
         return frame
