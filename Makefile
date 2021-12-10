@@ -5,3 +5,6 @@ init: # Setup pre-commit
 
 lint: # Lint all files in this repository
 	pre-commit run --all-files --show-diff-on-failure
+
+test: # Lint all files in this repository
+	pytest
