@@ -97,6 +97,7 @@ def main(
         end = time.time()
 
         # Update tracker and draw bounding boxes in frame.
+        # dets:  [xmin, ymin, xmax, ymax, score]
         frame = tracker.update(frame, dets)
 
         # Executed only first time.

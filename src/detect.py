@@ -55,7 +55,7 @@ class Detect(object):
         img = np.expand_dims(img, axis=0)
         return img.astype(np.float32)
 
-    def postprocess(self, output_data, box_type: str):
+    def postprocess(self, output_data, box_type: str) -> Tuple[np.ndarray]:
         """Postprocess."""
         output_data = output_data[0]
         # xywh
@@ -80,6 +80,7 @@ class Detect(object):
 
     def to_xyxy(self, boxes: np.ndarray) -> np.ndarray:
         """Covert xywh to xyxy."""
+        # (x, y) is cordinate fo the center of the box.
         x, y, w, h = boxes[..., 0], boxes[..., 1], boxes[..., 2], boxes[..., 3]
         boxes = np.array([x - w / 2, y - h / 2, x + w / 2, y + h / 2])
         # [4, n] -> [n, 4]

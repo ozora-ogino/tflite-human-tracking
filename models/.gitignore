@@ -1,2 +1,3 @@
 **.tflite
 !.gitignore
+!yolov5n6-fp16.tflite

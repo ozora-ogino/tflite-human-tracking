@@ -30,7 +30,6 @@ class Tracker(object):
         self.border = border
         self.count_callback = count_callback
         self.memory = {}
-        self.counter = 0
         self.counter = {key: 0 for key in directions.keys()}
         self.directions = directions
 
