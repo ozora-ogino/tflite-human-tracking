@@ -68,7 +68,7 @@ class Detect(object):
 
         if box_type == "xyxy":
             # xywh -> xyxyx
-            boxes = self.to_xyxy(box_type)
+            boxes = self.to_xyxy(boxes)
 
         # Filter by confidence threshold.
         idxs = np.where(conf > self.conf_thr)
