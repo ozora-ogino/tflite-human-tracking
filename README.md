@@ -9,10 +9,7 @@
 The motivation of TensorFlow Lite Human Tracking is developing person tacking system for edge camera.
 For example, count the number of visitors.
 
-To track and detect people over frames, DeepSORT is adopted.
-
-For the detail about DeepSORT, refer [this great article](https://medium.com/augmented-startups/deepsort-deep-learning-applied-to-object-tracking-924f59f99104).
-
+To track and detect people over frames, SORT is adopted.
 
 Currently [YOLOv5](https://github.com/ultralytics/yolov5) models are supported for object detection.
 To get YOLOv5 tflite model, see [`models/README.md`](./models/README.md)
